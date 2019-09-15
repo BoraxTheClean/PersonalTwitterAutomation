@@ -15,7 +15,7 @@ Resources:
         Type: AWS::Serverless::Function
         Properties:
             FunctionName: personal-twitter-automation
-            CodeUri: src/
+            CodeUri: dist/
             Handler: text.handler
             Runtime: python3.7
             Policies:
