@@ -1,5 +1,3 @@
-from random import randint
-from globals import *
 import os
 import tweepy
 import boto3
