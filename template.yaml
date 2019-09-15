@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Sends CorpSpeak texts to specified numbers.
+
+Globals:
+    Function:
+        Timeout: 300
+        AutoPublishAlias: live
+        DeploymentPreference:
+            Type: AllAtOnce
+
+Resources:
+
+    TwitterAutomation:
+        Type: AWS::Serverless::Function
+        Properties:
+            FunctionName: personal-twitter-automation
+            CodeUri: src/
+            Handler: text.handler
+            Runtime: python3.7
+            Policies:
+              - AWSLambdaExecute
+            Events:
+              TweetEveryFiveMinutes:
+                Type: Schedule
+                Properties:
+                  Schedule: rate(1 day)
