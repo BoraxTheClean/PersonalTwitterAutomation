@@ -21,7 +21,7 @@ Resources:
             Policies:
               - AWSLambdaExecute
             Events:
-              TweetEveryFiveMinutes:
+              DeleteTweetsWeekly:
                 Type: Schedule
                 Properties:
                   Schedule: rate(1 day)
