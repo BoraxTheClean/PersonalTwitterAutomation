@@ -28,7 +28,7 @@ def handler(event, context):
 def clear_timeline():
     now = datetime.datetime.now()
     last_week = now - datetime.timedelta(weeks=2)
-    for i in range(200):
+    for i in range(500):
         try:
             tweets = api.user_timeline(page=i)
         except Error as error:
