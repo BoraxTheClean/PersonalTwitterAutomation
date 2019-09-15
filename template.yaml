@@ -22,7 +22,7 @@ Resources:
               - AWSLambdaExecute
               - Effect: Allow
                 Action: ssm:GetParameter
-                Resource: arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/personal/*
+                Resource: !Sub 'arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/personal/*'
             Events:
               DeleteTweetsWeekly:
                 Type: Schedule
