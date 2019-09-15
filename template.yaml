@@ -18,6 +18,7 @@ Resources:
             CodeUri: dist/
             Handler: text.handler
             Runtime: python3.7
+            Timeout: 600
             Policies:
               - AWSLambdaExecute
               - Version: '2012-10-17'

@@ -6,10 +6,10 @@ import datetime
 ssm = boto3.client('ssm')
 
 try:
-    CONSUMER_KEY = ssm.get_parameter(Name='/personal/CONSUMER_KEY',WithDecryption=True)['Parameter']['Value']
-    CONSUMER_SECRET = ssm.get_parameter(Name='/personal/CONSUMER_SECRET',WithDecryption=True)['Parameter']['Value']
-    ACCESS_TOKEN = ssm.get_parameter(Name='/personal/ACCESS_TOKEN',WithDecryption=True)['Parameter']['Value']
-    ACCESS_SECRET = ssm.get_parameter(Name='/personal/ACCESS_SECRET',WithDecryption=True)['Parameter']['Value']
+    CONSUMER_KEY = ssm.get_parameter(Name='/personal/CONSUMER_KEY',WithDecryption=True)['Parameter']['Value'].trim()
+    CONSUMER_SECRET = ssm.get_parameter(Name='/personal/CONSUMER_SECRET',WithDecryption=True)['Parameter']['Value'].trim()
+    ACCESS_TOKEN = ssm.get_parameter(Name='/personal/ACCESS_TOKEN',WithDecryption=True)['Parameter']['Value'].trim()
+    ACCESS_SECRET = ssm.get_parameter(Name='/personal/ACCESS_SECRET',WithDecryption=True)['Parameter']['Value'].trim()
 except Exception as error:
     print(error)
     print("Failed to fetch api keys.")
@@ -37,7 +37,7 @@ def clear_timeline():
             return
         for tweet in tweets:
             if tweet.created_at < last_week:
-                print("Deleting "+tweet.id)
+                print("Deleting "+str(tweet.id))
                 destroy_status(tweet.id)
 
 
