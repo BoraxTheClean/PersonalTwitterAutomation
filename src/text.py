@@ -23,6 +23,7 @@ user = api.me()
 print('Tweeting for '+user.name)
 def handler(event, context):
     clear_timeline()
+    favorite_tweets()
 
 #Deletes tweets older than a week.
 def clear_timeline():
@@ -31,6 +32,11 @@ def clear_timeline():
     for status in tweepy.Cursor(api.user_timeline).items():
         if status.created_at < last_week:
             destroy_status(status.id)
+
+def favorite_tweets():
+    favorites = ['StarGazerNumbers','shoop22']
+    for fav in favorites:
+        get_user_timeline(fav)
 
 
 def get_user_timeline(user_id):
