@@ -28,17 +28,9 @@ def handler(event, context):
 def clear_timeline():
     now = datetime.datetime.now()
     last_week = now - datetime.timedelta(weeks=2)
-    for i in range(500): #TODO Make this use curors.
-        try:
-            tweets = api.user_timeline(page=i)
-        except Error as error:
-            print(error)
-        if len(tweets) == 0:
-            return
-        for tweet in tweets:
-            if tweet.created_at < last_week:
-                print("Deleting "+str(tweet.id))
-                destroy_status(tweet.id)
+    for status in tweepy.Cursor(api.user_timeline).items():
+        if status.created_at < last_week:
+            destroy_status(status.id)
 
 
 def get_user_timeline(user_id):
