@@ -34,8 +34,8 @@ def clear_timeline():
 
 
 def get_user_timeline(user_id):
-    tweets = api.user_timeline(screen_name=user_id,count=3200) #TODO Use curors and since_id with dynamodb.
-    return tweets
+    for status in tweepy.Cursor(api.user_timeline(screen_name=user_id)).items():
+        print(status.text)
 
 def destroy_status(id):
     api.destroy_status(id)
