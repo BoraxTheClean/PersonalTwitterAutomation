@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Sends CorpSpeak texts to specified numbers.
+Description: Performs programmatic tasks on my twitter account.
 
 Globals:
     Function:
@@ -31,4 +31,4 @@ Resources:
               DeleteTweetsWeekly:
                 Type: Schedule
                 Properties:
-                  Schedule: rate(1 day)
+                  Schedule: rate(1 hour)
