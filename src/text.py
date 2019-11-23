@@ -23,7 +23,7 @@ user = api.me()
 print('Tweeting for '+user.name)
 def handler(event, context):
     #Users that recieve perpetual likes.
-    favorites = ['StarGazerNumber','shoop_hs','xfileMTG','VTCLA1','Bloody','Grischa_','TenaciousMTG','yoman_5','Nafiusx','joemag_games','bertuuu','lucasfaley','misplacedginger','KanyeBestMTG','AlphaPhrog','SamRolph3','Whoot1234','olivia_claire_','realjoepatry','NetRepTodd']
+    favorites = ['StarGazerNumber','shoop_hs','xfileMTG','VTCLA1','Bloody','Grischa_','TenaciousMTG','yoman_5','Nafiusx','joemag_games','bertuuu','lucasfaley','misplacedginger','KanyeBestMTG','AlphaPhrog','SamRolph3','Whoot1234','olivia_claire_','realjoepatry','NetRepTodd','dillyg10','Rage_HS','HS_Orange']
     clear_timeline()
     favorite_tweets(favorites)
 
