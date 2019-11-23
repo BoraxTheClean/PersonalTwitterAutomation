@@ -22,29 +22,34 @@ api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 user = api.me()
 print('Tweeting for '+user.name)
 def handler(event, context):
+    #Users that recieve perpetual likes.
+    favorites = ['StarGazerNumber','shoop_hs','xfileMTG','VTCLA1','Bloody','Grischa_','TenaciousMTG','yoman_5','Nafiusx','joemag_games','bertuuu','lucasfaley','misplacedginger','KanyeBestMTG','AlphaPhrog','SamRolph3','Whoot1234','olivia_claire_','realjoepatry','NetRepTodd']
     clear_timeline()
-    favorite_tweets()
+    favorite_tweets(favorites)
 
 #Deletes tweets older than a week.
 def clear_timeline():
     now = datetime.datetime.now()
-    last_week = now - datetime.timedelta(weeks=2)
+    last_week = now - datetime.timedelta(weeks=1)
     for status in tweepy.Cursor(api.user_timeline).items():
         if status.created_at < last_week:
             destroy_status(status.id)
 
-def favorite_tweets():
-    favorites = ['StarGazerNumbers','shoop22']
-    for fav in favorites:
-        get_user_timeline(fav)
-
-
-def get_user_timeline(user_id):
-    for status in tweepy.Cursor(api.user_timeline(screen_name=user_id)).items():
-        print(status.text)
+#Like the last 30 tweets from each of my favorite users.
+def favorite_tweets(user_ids):
+    for user_id in user_ids:
+        print('Inspecting tweets from: '+user_id)
+        try:
+            for status in tweepy.Cursor(api.user_timeline,screen_name=user_id).items(30):
+                print(status.text)
+                print(status.favorited)
+                if not status.favorited:
+                    favorite_status(status)
+        except:
+            print("Error trying to retrieve tweets. Perhaps a name change?")
 
 def destroy_status(id):
     api.destroy_status(id)
 
-def favorite_status(id):
-    api.favorite_status(id)
+def favorite_status(status):
+    status.favorite()
