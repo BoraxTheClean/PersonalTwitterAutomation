@@ -2,7 +2,8 @@ import os
 import tweepy
 import boto3
 import datetime
-
+import time
+import math
 ssm = boto3.client('ssm')
 
 try:
@@ -23,9 +24,9 @@ user = api.me()
 print('Tweeting for '+user.name)
 def handler(event, context):
     #Users that recieve perpetual likes.
-    favorites = ['StarGazerNumber','shoop_hs','xfileMTG','VTCLA1','Bloody','Grischa_','TenaciousMTG','yoman_5','Nafiusx','joemag_games','bertuuu','lucasfaley','misplacedginger','KanyeBestMTG','AlphaPhrog','SamRolph3','Whoot1234','olivia_claire_','realjoepatry','NetRepTodd','dillyg10','Rage_HS','HS_Orange']
+    FAVORITE_PEOPLE = os.environ.get('FAVORITE_PEOPLE').split(',')
     clear_timeline()
-    favorite_tweets(favorites)
+    favorite_tweets(FAVORITE_PEOPLE)
 
 #Deletes tweets older than a week.
 def clear_timeline():
@@ -38,18 +39,35 @@ def clear_timeline():
 #Like the last 30 tweets from each of my favorite users.
 def favorite_tweets(user_ids):
     for user_id in user_ids:
-        print('Inspecting tweets from: '+user_id)
         try:
-            for status in tweepy.Cursor(api.user_timeline,screen_name=user_id).items(30):
-                print(status.text)
-                print(status.favorited)
-                if not status.favorited:
+            for status in tweepy.Cursor(api.user_timeline,screen_name=user_id).items(10):
+                favorited = is_this_favorited(status)
+                if not favorited:
+                    time.sleep(1)
                     favorite_status(status)
-        except:
-            print("Error trying to retrieve tweets. Perhaps a name change?")
+        except Exception as e:
+            print(e)
+            print("Error in retrieve, check, favorite block for user: "+user_id)
+
+def is_this_favorited(status):
+    try:
+        return status.favorited
+    except Exception as e:
+        print(e)
+        print("Error getting favorite status: "+status.text)
+        return False
+
+
+def favorite_status(status):
+    MAX_RETRIES = 5
+    for i in range(MAX_RETRIES):
+        try:
+            status.favorite()
+        except Exception as e:
+             print(e)
+             print("Error favoriting status: "+status.text)
+             time.sleep(math.pow(2,i))
+
 
 def destroy_status(id):
     api.destroy_status(id)
-
-def favorite_status(status):
-    status.favorite()
