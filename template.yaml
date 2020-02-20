@@ -19,6 +19,7 @@ Resources:
             Handler: text.handler
             Runtime: python3.7
             Timeout: 600
+            ReservedConcurrentExecutions: 1
             Policies:
               - AWSLambdaExecute
               - Version: '2012-10-17'
@@ -31,7 +32,7 @@ Resources:
               DeleteTweetsWeekly:
                 Type: Schedule
                 Properties:
-                  Schedule: rate(1 hour)
+                  Schedule: rate(12 hours)
             Environment:
               Variables:
-                FAVORITE_PEOPLE: 'StarGazerNumber,shoop_hs,xfileMTG,VTCLA1,Bloody,Grischa_,TenaciousMTG,yoman_5,Nafiusx,joemag_games,bertuuu,lucasfaley,misplacedginger,KanyeBestMTG,AlphaPhrog,SamRolph3,Whoot1234,olivia_claire_,realjoepatry,NetRepTodd,dillyg10,Rage_HS,HS_Orange,justiswright,JerrBearPig'
+                FAVORITE_PEOPLE: 'StarGazerNumber,shoop_hs,xfileMTG,VTCLA1,Bloody,Grischa_,TenaciousMTG,yoman_5,Nafiusx,joemag_games,bertuuu,lucasfaley,misplacedginger,KanyeBestMTG,AlfaPhrog,SamRolph3,Whoot1234,olivia_clare_,realjoepatry,NetRepTodd,dillyg10,Rage_HS,HS_Orange,justiswright,JerrBearPig,Chord_O_Calls'
