@@ -26,7 +26,6 @@ def handler(event, context):
     #Users that recieve perpetual likes.
     FAVORITE_PEOPLE = os.environ.get('FAVORITE_PEOPLE').split(',')
     clear_timeline()
-    favorite_tweets(FAVORITE_PEOPLE)
 
 #Deletes tweets older than a week.
 def clear_timeline():
@@ -56,17 +55,6 @@ def is_this_favorited(status):
         print(e)
         print("Error getting favorite status: "+status.text)
         return False
-
-
-def favorite_status(status):
-    MAX_RETRIES = 5
-    for i in range(MAX_RETRIES):
-        try:
-            status.favorite()
-        except Exception as e:
-             print(e)
-             print("Error favoriting status: "+status.text)
-             time.sleep(math.pow(2,i))
 
 
 def destroy_status(id):
