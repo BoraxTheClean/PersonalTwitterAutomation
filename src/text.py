@@ -2,7 +2,8 @@ import os
 import tweepy
 import boto3
 import datetime
-
+import time
+import math
 ssm = boto3.client('ssm')
 
 try:
@@ -39,16 +40,34 @@ def clear_timeline():
 def favorite_tweets(user_ids):
     for user_id in user_ids:
         try:
-            for status in tweepy.Cursor(api.user_timeline,screen_name=user_id).items(30):
-                if not status.favorited:
+            for status in tweepy.Cursor(api.user_timeline,screen_name=user_id).items(10):
+                favorited = is_this_favorited(status)
+                if not favorited:
+                    time.sleep(1)
                     favorite_status(status)
         except Exception as e:
             print(e)
-        finally:
-            print("Error trying to retrieve tweets. Perhaps a name change? Name: "+user_id)
+            print("Error in retrieve, check, favorite block for user: "+user_id)
+
+def is_this_favorited(status):
+    try:
+        return status.favorited
+    except Exception as e:
+        print(e)
+        print("Error getting favorite status: "+status.text)
+        return False
+
+
+def favorite_status(status):
+    MAX_RETRIES = 5
+    for i in range(MAX_RETRIES):
+        try:
+            status.favorite()
+        except Exception as e:
+             print(e)
+             print("Error favoriting status: "+status.text)
+             time.sleep(math.pow(2,i))
+
 
 def destroy_status(id):
     api.destroy_status(id)
-
-def favorite_status(status):
-    status.favorite()
