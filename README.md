@@ -1,4 +1,4 @@
-# TwitterBot
+# PersonalTwitterAutomation
 ## Setup
 
 Apply for a developer account at https://developer.twitter.com/
@@ -21,7 +21,7 @@ The function assumes that there are SSM parameters in your deployment region at 
 Modify this line of script.sh and replace `owen-lambda-bucket` with your own s3 bucket located in the region you are deploying into.
 
 ```
-aws cloudformation package --template-file template.yaml --s3-bucket ***owen-lambda-bucket*** --s3-prefix twitter-bot --output-template processed.template.yaml
+aws cloudformation package --template-file template.yaml --s3-bucket ***owen-lambda-bucket*** --s3-prefix twitter-bot --output-template processed.template.yaml --region ***us-east-1***
 ```
 
 Then simply run

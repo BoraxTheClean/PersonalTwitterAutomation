@@ -2,7 +2,8 @@ import os
 import tweepy
 import boto3
 import datetime
-
+import time
+import math
 ssm = boto3.client('ssm')
 
 try:
@@ -18,27 +19,20 @@ auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 
 auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
 
-api = tweepy.API(auth)
+api = tweepy.API(auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
 user = api.me()
 print('Tweeting for '+user.name)
 def handler(event, context):
+    #Users that recieve perpetual likes.
     clear_timeline()
 
 #Deletes tweets older than a week.
 def clear_timeline():
     now = datetime.datetime.now()
     last_week = now - datetime.timedelta(weeks=12)
-    for i in range(500):
-        try:
-            tweets = api.user_timeline(page=i)
-        except Error as error:
-            print(error)
-        if len(tweets) == 0:
-            return
-        for tweet in tweets:
-            if tweet.created_at < last_week:
-                print("Deleting "+str(tweet.id))
-                destroy_status(tweet.id)
+    for status in tweepy.Cursor(api.user_timeline).items():
+        if status.created_at < last_week:
+            destroy_status(status.id)
 
 
 def destroy_status(id):
