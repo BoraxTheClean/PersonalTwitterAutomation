@@ -27,7 +27,7 @@ def handler(event, context):
 #Deletes tweets older than a week.
 def clear_timeline():
     now = datetime.datetime.now()
-    last_week = now - datetime.timedelta(weeks=2)
+    last_week = now - datetime.timedelta(weeks=12)
     for i in range(500):
         try:
             tweets = api.user_timeline(page=i)
